@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 # ModeMap.py by J.M. Skelton
 
 
@@ -112,6 +113,14 @@ group2.add_argument(
     );
 
 group2.add_argument(
+    "--tolerance",
+    metavar = "'tol'",
+    type = float, dest = 'tolerance',
+    default=1e-5,
+    help = "Symmetry tolerance."
+    );
+
+group2.add_argument(
     "--no_q_scale",
     action = 'store_true',
     help = "Do not scale normal-mode coordinates fed to Phonopy by sqrt(N_a) (this is required for correct dU(Q) curves; only turn this off if you know what you're doing...!)"
@@ -193,7 +202,8 @@ structure = read_vasp(args.CellFile);
 phonon = Phonopy(
     structure,
     args.SupercellMatrix,
-    primitive_matrix = args.PrimitiveMatrix
+    primitive_matrix = args.PrimitiveMatrix,
+    symprec = args.tolerance
     );
 
 # Set up the force constants.
